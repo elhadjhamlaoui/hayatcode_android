@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Hayat Code</string>
+    <string name="password_required">at least 6 characters</string>
+    <string name="wrong_password">Wrong Password</string>
+    <string name="retry">Retry</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+
+    <string name="tab_text_1">contacts</string>
+    <string name="tab_text_2">Emergency infos</string>
+    <string name="tab_text_3">Medical files</string>
+    <string name="tab_text_4">Personal infos</string>
+    <string name="field_required">This field is required</string>
+    <string name="email_error">You need to enter a valid email</string>
+    <string name="password_error_repeat">you need to enter the same password</string>
+    <string name="pin_required">pin must be 5 digits</string>
+    <string name="atleast_item">Please Choose at least 1 item</string>
+    <string name="select_type">Please Select the type of information</string>
+    <string name="uploading_photo">Uploading photo..</string>
+    <string name="change_pass_success">Password changed</string>
+    <string name="ok">ok</string>
+    <string name="current_pass_incorrect">wrong password</string>
+    <string name="gender">Chose your gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="change_photo">Change photo</string>
+    <string name="confirm_change_name">you want to change your name?</string>
+    <string name="yes">yes</string>
+    <string name="no">No</string>
+    <string name="logout">Are you sure you want to log out?</string>
+
+</resources>

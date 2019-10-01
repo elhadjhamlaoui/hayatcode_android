@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="false"
+    android:fillViewport="true"
+    android:focusable="false">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".OrderNewCode4">
+
+        <Button
+            android:id="@+id/order"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginLeft="70dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="70dp"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/but_red_round"
+            android:text="Order now"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView5"
+            app:layout_constraintVertical_bias="1" />
+
+
+        <CheckBox
+            android:id="@+id/bracelet"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/but_red_round"
+            android:button="@drawable/checkbox"
+            android:gravity="center"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:text="Bracelet"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shoetag" />
+
+        <CheckBox
+            android:id="@+id/shoetag"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/but_red_round"
+            android:button="@drawable/checkbox"
+            android:gravity="center"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:text="Shoe tag"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <CheckBox
+            android:id="@+id/wallet"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/but_red_round"
+            android:button="@drawable/checkbox"
+            android:checkMark="@drawable/ic_checked"
+            android:gravity="center"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:text="Wallet Card"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/keychain" />
+
+        <CheckBox
+            android:id="@+id/keychain"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/but_red_round"
+            android:button="@drawable/checkbox"
+            android:checkMark="@drawable/ic_checked"
+            android:gravity="center"
+            android:layoutDirection="rtl"
+            android:padding="10dp"
+            android:text="Key chain"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bracelet" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginRight="40dp"
+            android:gravity="center"
+            android:text="Hayat code can be printed on different items,\n chose at least one"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="total:"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wallet" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:text="0 $"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="@+id/textView5"
+            app:layout_constraintStart_toEndOf="@+id/textView5" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/green_round"
+            android:padding="5dp"
+            android:text="10$"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/shoetag"
+            app:layout_constraintEnd_toEndOf="@+id/shoetag"
+            app:layout_constraintHorizontal_bias="0.617"
+            app:layout_constraintStart_toEndOf="@+id/shoetag" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/green_round"
+            android:padding="5dp"
+            android:text="10$"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/bracelet"
+            app:layout_constraintEnd_toEndOf="@+id/bracelet"
+            app:layout_constraintStart_toEndOf="@+id/bracelet" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/green_round"
+            android:padding="5dp"
+            android:text="10$"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/keychain"
+            app:layout_constraintEnd_toEndOf="@+id/keychain"
+            app:layout_constraintStart_toEndOf="@+id/keychain" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/green_round"
+            android:padding="5dp"
+            android:text="10$"
+            android:textColor="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/wallet"
+            app:layout_constraintEnd_toEndOf="@+id/wallet"
+            app:layout_constraintStart_toEndOf="@+id/wallet" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

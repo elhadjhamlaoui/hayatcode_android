@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "174405701783",
+    "firebase_url": "https://hayatcode-16825.firebaseio.com",
+    "project_id": "hayatcode-16825",
+    "storage_bucket": "hayatcode-16825.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174405701783:android:da2fa1eeabc507c980d9d2",
+        "android_client_info": {
+          "package_name": "com.hayatcode.client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174405701783-mnvbrlf92vhstk8c8ri77rdu2a0k8g4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv13898MjWF5sc6QeK9OyZV3EZnqU_nxE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174405701783-mnvbrlf92vhstk8c8ri77rdu2a0k8g4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
