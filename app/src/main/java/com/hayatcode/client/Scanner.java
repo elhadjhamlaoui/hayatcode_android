@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import com.dlazaro66.qrcodereaderview.QRCodeReaderView;
 import com.google.android.gms.dynamic.IFragmentWrapper;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Scanner extends AppCompatActivity implements QRCodeReaderView.OnQRCodeReadListener {
 
 
     private QRCodeReaderView qrCodeReaderView;
 
+    boolean enabled = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +49,23 @@ public class Scanner extends AppCompatActivity implements QRCodeReaderView.OnQRC
     @Override
     public void onQRCodeRead(String text, PointF[] points) {
 
-        String email = text.split("/")[1];
+        if (enabled) {
+            enabled = false;
+            String email = text.split("/")[1];
 
-        Intent intent = new Intent(Scanner.this, LoginActivity.class);
-        intent.putExtra("email", email);
-        startActivity(intent);
+            Intent intent = new Intent(Scanner.this, LoginActivity.class);
+            intent.putExtra("email", email);
+            startActivity(intent);
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         qrCodeReaderView.startCamera();
+        enabled = true;
+
     }
 
     @Override
