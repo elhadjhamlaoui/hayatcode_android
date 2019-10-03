@@ -39,8 +39,12 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -82,13 +86,12 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     DatePickerDialog.OnDateSetListener dateSetListener;
     Calendar calendar;
     Uri imageUri;
-    ProgressDialog imageUploadDialog;
+    ProgressDialog imageUploadDialog, saveEditDialog;
     private String mCurrentPhotoPath;
     File photoFile = null;
     Button BT_save;
 
     ImageView IV_edit_firstname, IV_edit_lastname, IV_edit_gender, IV_edit_birthdate;
-
 
 
     public static PersonalFragment newInstance(int index) {
@@ -181,7 +184,11 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         imageUploadDialog = new ProgressDialog(getActivity());
         imageUploadDialog.setTitle(R.string.uploading_photo);
 
-        //Glide.with(this).load(user.getPhoto()).into(IV_userPhoto);
+        saveEditDialog = new ProgressDialog(getActivity());
+        saveEditDialog.setTitle(R.string.saving_update);
+
+        if (!user.getPhoto().isEmpty())
+        Glide.with(this).load(user.getPhoto()).into(IV_userPhoto);
 
 
         TV_gender.setText(user.getGender());
@@ -191,57 +198,16 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         ET_lastName.setHint(user.getFamilyName());
 
 
-
         ET_firstName.setHint(user.getFirstName());
         ET_lastName.setHint(user.getFamilyName());
         ET_email.setHint(user.getEmail());
 
 
-        //ET_firstName.setOnClickListener(this);
-        ET_lastName.setOnClickListener(this);
 
-
-        ET_firstName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                BT_save.setEnabled(true);
-            }
-        });
-
-        ET_lastName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                BT_save.setEnabled(true);
-            }
-        });
 
 
         return root;
     }
-
-
 
 
     @Override
@@ -279,13 +245,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                 break;
 
 
-
             case R.id.edit_first_name:
-                enableEdit(ET_firstName);
                 break;
 
             case R.id.edit_last_name:
-                enableEdit(ET_lastName);
                 break;
 
 
@@ -301,32 +264,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void enableEdit(EditText editText) {
-        editText.setEnabled(true);
-        editText.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
 
-    }
 
     private boolean validate() {
         boolean validate = true;
-
-        String firstname = ET_firstName.getText().toString();
-        String lastname = ET_lastName.getText().toString();
-
-
-        if (firstname.isEmpty()) {
-            ET_firstName.setBackground(getResources().getDrawable(R.drawable.bac_edittext_red));
-            validate = false;
-        } else
-            ET_firstName.setBackground(getResources().getDrawable(R.drawable.bac_edittext_white));
-
-        if (lastname.isEmpty()) {
-            ET_lastName.setBackground(getResources().getDrawable(R.drawable.bac_edittext_red));
-            validate = false;
-        } else
-            ET_lastName.setBackground(getResources().getDrawable(R.drawable.bac_edittext_white));
 
 
         return validate;
@@ -335,7 +276,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     private void saveUserInfos() {
 
         sendEditRequest();
-        userLocalStore.storeUserData(user);
     }
 
     void showGenderDialog() {
@@ -451,11 +391,10 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                     options.inPreferredConfig = Bitmap.Config.ARGB_8888;
                     bitmap = BitmapFactory.decodeFile(imagePath, options);
 
-                    IV_userPhoto.setImageBitmap(bitmap);
                     imageUploadDialog.show();
 
 
-                    uploadPhoto(bitmap,imageRef);
+                    uploadPhoto(bitmap, imageRef);
 
                     cursor.close();
                     break;
@@ -466,9 +405,9 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
                                 Uri.parse(mCurrentPhotoPath));
 
 
-                        IV_userPhoto.setImageBitmap(bitmap);
+
                         imageUploadDialog.show();
-                        uploadPhoto(bitmap,imageRef);
+                        uploadPhoto(bitmap, imageRef);
 
 
                     } catch (IOException e) {
@@ -482,7 +421,7 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void uploadPhoto(Bitmap bitmap, StorageReference imageRef) {
+    private void uploadPhoto(final Bitmap bitmap, final StorageReference imageRef) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 70, baos);
         byte[] dataBytes = baos.toByteArray();
@@ -496,10 +435,19 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        user.setPhoto(uri.toString());
+                        userLocalStore.storeUserData(user);
+                        imageUploadDialog.dismiss();
+                        IV_userPhoto.setImageBitmap(bitmap);
+                    }
+                });
             }
         });
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -519,7 +467,6 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
-
 
 
     private void checkForStoragePermissions() {
@@ -560,8 +507,35 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
     }
 
     private void sendEditRequest() {
+        saveEditDialog.show();
 
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference()
+                .child("user")
+                .child(Utils.getUID());
 
+        databaseReference
+                .child("gender")
+                .setValue(user.getGender())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            databaseReference
+                                    .child("birthDate")
+                                    .setValue(user.getBirthDate())
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                userLocalStore.storeUserData(user);
+                                                saveEditDialog.dismiss();
+                                                BT_save.setEnabled(false);
+                                            }
+                                        }
+                                    });
+                        }
+                    }
+                });
     }
 
 }

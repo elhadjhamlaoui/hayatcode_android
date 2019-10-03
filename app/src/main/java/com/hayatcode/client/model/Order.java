@@ -21,6 +21,10 @@ public class Order implements Parcelable {
         items = in.readString();
     }
 
+    protected Order() {
+
+    }
+
     public static final Creator<Order> CREATOR = new Creator<Order>() {
         @Override
         public Order createFromParcel(Parcel in) {

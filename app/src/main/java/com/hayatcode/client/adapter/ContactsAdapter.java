@@ -22,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
 import com.hayatcode.client.Utils;
@@ -100,7 +102,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
 
                     final ArrayAdapter<String> arrayAdapter =
                             new ArrayAdapter<String>(context,
-                                    android.R.layout.select_dialog_singlechoice);
+                                    android.R.layout.simple_list_item_1);
                     arrayAdapter.add("Call");
                     arrayAdapter.add("Delete");
 
@@ -138,14 +140,22 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
                             } else {
                                 contacts.remove(getAdapterPosition());
                                 user.setContacts(contacts);
-                                userLocalStore.storeUserData(user);
                                 if (Utils.getUID() != null) {
                                     FirebaseDatabase.getInstance()
                                             .getReference()
                                             .child("user")
                                             .child(Utils.getUID())
                                             .child("contacts")
-                                            .setValue(contacts);
+                                            .setValue(contacts).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                userLocalStore.storeUserData(user);
+
+                                                notifyDataSetChanged();
+                                            }
+                                        }
+                                    });
                                 }
                             }
                         }

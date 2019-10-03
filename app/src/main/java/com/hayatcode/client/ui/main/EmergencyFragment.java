@@ -129,7 +129,7 @@ public class EmergencyFragment extends Fragment {
                 android.app.AlertDialog.Builder builderSingle = new android.app.AlertDialog.Builder(getActivity());
 
                 final ArrayAdapter<String> arrayAdapter =
-                        new ArrayAdapter<String>(getActivity(),
+                        new ArrayAdapter<>(getActivity(),
                                 android.R.layout.select_dialog_singlechoice);
 
                 arrayAdapter.add("O positive");
@@ -141,15 +141,44 @@ public class EmergencyFragment extends Fragment {
                 arrayAdapter.add("AB positive");
                 arrayAdapter.add("AB negative");
 
+                int position = 0;
 
-                builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
+                switch (user.getBlood()) {
+                    case "O positive" :
+                        position = 0;
+                        break;
+                    case "O negative" :
+                        position = 1;
 
-                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                        break;
+                    case "A positive" :
+                        position = 2;
+
+                        break;
+                    case "A negative" :
+                        position = 3;
+
+                        break;
+                    case "B positive" :
+                        position = 4;
+
+                        break;
+                    case "B negative" :
+                        position = 5;
+
+                        break;
+                    case "AB positive" :
+                        position = 6;
+
+                        break;
+                    case "AB negative" :
+                        position = 7;
+
+                        break;
+                }
+
+
+                builderSingle.setSingleChoiceItems(R.array.blood, position,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String blood = arrayAdapter.getItem(which);
@@ -167,6 +196,8 @@ public class EmergencyFragment extends Fragment {
                         });
                     }
                 });
+                builderSingle.setPositiveButton(getString(R.string.ok),null);
+
                 builderSingle.show();
             }
         });
@@ -174,6 +205,7 @@ public class EmergencyFragment extends Fragment {
 
         return root;
     }
+
 
     private void addItems() {
 

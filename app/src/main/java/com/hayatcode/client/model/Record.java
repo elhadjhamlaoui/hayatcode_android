@@ -16,6 +16,10 @@ public class Record implements Parcelable {
         url = in.readString();
     }
 
+    protected Record() {
+
+    }
+
     public static final Creator<Record> CREATOR = new Creator<Record>() {
         @Override
         public Record createFromParcel(Parcel in) {

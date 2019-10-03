@@ -10,8 +10,8 @@ public class User implements Parcelable {
     private String familyName, firstName, email,
             birthDate, gender, photo, password ="",
             deliveryAddress, phone, blood;
-    private int pin, nationalId;
-    private String items;
+    private int pin;
+    private String items,nationalId;
     private ArrayList<Contact> contacts;
     private ArrayList<MedicalInfo> medInfos;
     private ArrayList<Record> records;
@@ -20,7 +20,7 @@ public class User implements Parcelable {
     public User(String familyName, String firstName, String email,
                 String birthDate, String gender, String photo, String password,
                 String deliveryAddress, String phone, String blood, int pin,
-                int nationalId, String items, ArrayList<Contact> contacts,
+                String nationalId, String items, ArrayList<Contact> contacts,
                 ArrayList<MedicalInfo> medInfos, ArrayList<Record> records) {
 
         this.familyName = familyName;
@@ -58,7 +58,7 @@ public class User implements Parcelable {
         phone = in.readString();
         blood = in.readString();
         pin = in.readInt();
-        nationalId = in.readInt();
+        nationalId = in.readString();
         items = in.readString();
         contacts = in.createTypedArrayList(Contact.CREATOR);
         medInfos = in.createTypedArrayList(MedicalInfo.CREATOR);
@@ -198,11 +198,11 @@ public class User implements Parcelable {
         this.pin = pin;
     }
 
-    public int getNationalId() {
+    public String getNationalId() {
         return nationalId;
     }
 
-    public void setNationalId(int nationalId) {
+    public void setNationalId(String nationalId) {
         this.nationalId = nationalId;
     }
 
@@ -225,7 +225,7 @@ public class User implements Parcelable {
         parcel.writeString(phone);
         parcel.writeString(blood);
         parcel.writeInt(pin);
-        parcel.writeInt(nationalId);
+        parcel.writeString(nationalId);
         parcel.writeString(items);
         parcel.writeTypedList(contacts);
         parcel.writeTypedList(medInfos);

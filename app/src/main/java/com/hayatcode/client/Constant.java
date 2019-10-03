@@ -9,4 +9,5 @@ public class Constant {
     public static final int CAMERA_PERMISSION_CODE = 55;
     public static final int CAMERA_REQUEST_CODE = 111;
     public static final int STORAGE_PERMISSION_CODE = 66;
+    public static final int STORAGE_PERMISSION_CODE2 = 114;
 }

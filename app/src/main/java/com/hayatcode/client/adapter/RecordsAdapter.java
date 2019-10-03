@@ -1,16 +1,25 @@
 package com.hayatcode.client.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
+import com.hayatcode.client.Utils;
 import com.hayatcode.client.data.UserLocalStore;
 import com.hayatcode.client.model.MedicalInfo;
 import com.hayatcode.client.model.Record;
@@ -58,6 +67,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.viewHold
 
     class viewHolder extends RecyclerView.ViewHolder{
         TextView label;
+        TextView view;
         ConstraintLayout rootLayout;
 
 
@@ -65,11 +75,71 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.viewHold
             super(itemView);
             label = itemView.findViewById(R.id.label);
             rootLayout = itemView.findViewById(R.id.root);
+            view = itemView.findViewById(R.id.view);
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse(records.get(getAdapterPosition()).getUrl()));
+                    context.startActivity(browserIntent);
+                }
+            });
 
             rootLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 
+                    final ArrayAdapter<String> arrayAdapter =
+                            new ArrayAdapter<String>(context,
+                                    android.R.layout.simple_list_item_1);
+                    arrayAdapter.add("View");
+                    arrayAdapter.add("Delete");
+
+
+                    builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+                                Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse(records.get(getAdapterPosition()).getUrl()));
+                                context.startActivity(browserIntent);
+
+                            } else {
+                                records.remove(getAdapterPosition());
+                                user.setRecords(records);
+
+                                if (Utils.getUID() != null) {
+                                    FirebaseDatabase.getInstance()
+                                            .getReference()
+                                            .child("user")
+                                            .child(Utils.getUID())
+                                            .child("records")
+                                            .setValue(records)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        userLocalStore.storeUserData(user);
+                                                        notifyDataSetChanged();
+                                                    }
+
+                                                }
+                                            });
+
+                                }
+                            }
+                        }
+                    });
+                    builderSingle.show();
                 }
             });
 

@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
         app:lottie_fileName="email.json"
-        app:lottie_loop="true" />
+        app:lottie_loop="false" />
 
     <TextView
         android:id="@+id/textView11"

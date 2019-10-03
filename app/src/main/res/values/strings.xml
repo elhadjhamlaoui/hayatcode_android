@@ -1,10 +1,22 @@
 <resources>
+    <array name="blood">
+
+        <item>O positive</item>
+        <item>O negative</item>
+        <item>A positive</item>
+        <item>A negative</item>
+        <item>B positive</item>
+        <item>B negative</item>
+        <item>AB positive</item>
+        <item>AB negative</item>
+
+    </array>
     <string name="app_name">Hayat Code</string>
     <string name="password_required">at least 6 characters</string>
     <string name="wrong_password">Wrong Password</string>
     <string name="retry">Retry</string>
-    <string name="title_activity_profile">ProfileActivity</string>
 
+    <string name="title_activity_profile">ProfileActivity</string>
     <string name="tab_text_1">contacts</string>
     <string name="tab_text_2">Emergency infos</string>
     <string name="tab_text_3">Medical files</string>
@@ -28,6 +40,11 @@
     <string name="confirm_change_name">you want to change your name?</string>
     <string name="yes">yes</string>
     <string name="no">No</string>
+
     <string name="logout">Are you sure you want to log out?</string>
+    <string name="select_name">Please select the name before</string>
+    <string name="select_record">Please select the record</string>
+    <string name="uploading_file">Uploading file...</string>
+    <string name="saving_update">Saving changes...</string>
 
 </resources>

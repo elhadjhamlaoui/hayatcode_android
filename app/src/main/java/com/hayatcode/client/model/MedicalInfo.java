@@ -12,6 +12,9 @@ public class MedicalInfo implements Parcelable {
         this.name = name;
     }
 
+    public MedicalInfo() {
+
+    }
     protected MedicalInfo(Parcel in) {
         type = in.readString();
         name = in.readString();

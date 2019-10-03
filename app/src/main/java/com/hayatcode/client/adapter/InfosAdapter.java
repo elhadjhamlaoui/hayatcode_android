@@ -22,6 +22,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
 import com.hayatcode.client.Utils;
@@ -32,10 +34,10 @@ import com.hayatcode.client.model.User;
 
 import java.util.ArrayList;
 
-public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder>  {
+public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> {
 
     Context context;
-    ArrayList<MedicalInfo> medicalInfos ;
+    ArrayList<MedicalInfo> medicalInfos;
     User user;
     UserLocalStore userLocalStore;
 
@@ -69,8 +71,7 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
     }
 
 
-
-    class viewHolder extends RecyclerView.ViewHolder{
+    class viewHolder extends RecyclerView.ViewHolder {
         TextView label;
         ConstraintLayout rootLayout;
 
@@ -80,19 +81,65 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
             label = itemView.findViewById(R.id.label);
             rootLayout = itemView.findViewById(R.id.root);
 
-            rootLayout.setOnClickListener(new View.OnClickListener() {
+            /*rootLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                }
-            });
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(context);
 
+                    final ArrayAdapter<String> arrayAdapter =
+                            new ArrayAdapter<String>(context,
+                                    android.R.layout.simple_list_item_1);
+                    arrayAdapter.add("Delete");
+
+
+                    builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == 0) {
+
+                                int position;
+                                MedicalInfo medicalInfo = medicalInfos.get(getAdapterPosition())
+                                medicalInfos.remove(getAdapterPosition());
+                                user.setMedInfos(medicalInfos);
+
+                                if (Utils.getUID() != null) {
+                                    FirebaseDatabase.getInstance()
+                                            .getReference()
+                                            .child("user")
+                                            .child(Utils.getUID())
+                                            .child("medInfos")
+                                            .setValue(medicalInfos)
+                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        userLocalStore.storeUserData(user);
+                                                        notifyDataSetChanged();
+                                                    }
+
+                                                }
+                                            });
+
+                                }
+                            }
+                        }
+                    });
+                    builderSingle.show();
+                }
+            });*/
 
 
         }
 
     }
-
 
 
 }

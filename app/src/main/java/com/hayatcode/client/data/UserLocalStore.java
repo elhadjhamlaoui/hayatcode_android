@@ -36,9 +36,9 @@ public class UserLocalStore {
         userLocalDatabaseEditor.putString("deliveryAddress", user.getDeliveryAddress());
         userLocalDatabaseEditor.putString("items", user.getItems());
         userLocalDatabaseEditor.putString("blood", user.getBlood());
+        userLocalDatabaseEditor.putString("nationalId", user.getNationalId());
 
         userLocalDatabaseEditor.putInt("pin", user.getPin());
-        userLocalDatabaseEditor.putInt("nationalId", user.getNationalId());
 
 
         Gson gson = new Gson();
@@ -85,9 +85,9 @@ public class UserLocalStore {
         String deliveryAddress = userLocalDatabase.getString("deliveryAddress", "");
         String items = userLocalDatabase.getString("items", "");
         String blood = userLocalDatabase.getString("blood", "");
+        String nationalId = userLocalDatabase.getString("nationalId","");
 
         int pin = userLocalDatabase.getInt("pin",0);
-        int nationalId = userLocalDatabase.getInt("nationalId",0);
 
 
 

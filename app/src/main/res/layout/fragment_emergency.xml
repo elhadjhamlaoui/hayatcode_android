@@ -40,7 +40,7 @@
                     android:id="@+id/edit_blood"
                     android:layout_width="70dp"
                     android:layout_height="40dp"
-                    android:background="@drawable/but_round_blue"
+                    android:background="@drawable/green_round"
                     android:text="EDIT"
                     android:textColor="@android:color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -153,18 +153,10 @@
             android:layout_marginRight="44dp"
             android:layout_marginBottom="40dp"
             android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@android:color/holo_blue_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_menu_add" />
-
-        <TextView
-            android:id="@+id/textView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="179dp"
-            tools:layout_editor_absoluteY="374dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

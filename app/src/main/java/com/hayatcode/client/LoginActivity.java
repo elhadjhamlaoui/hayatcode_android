@@ -64,9 +64,11 @@ public class LoginActivity extends AppCompatActivity {
                                                 User user = dataSnapshot.getValue(User.class);
                                                 userLocalStore.setUserLoggedIn(true);
                                                 userLocalStore.storeUserData(user);
-                                                finish();
-                                                startActivity(new Intent(LoginActivity.this,
-                                                        ProfileActivity.class));
+
+                                                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+
                                             }
 
                                             @Override

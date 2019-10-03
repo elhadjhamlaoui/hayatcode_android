@@ -18,6 +18,9 @@ public class Contact implements Parcelable {
         name = in.readString();
         phone = in.readString();
     }
+    protected Contact() {
+
+    }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
         @Override
