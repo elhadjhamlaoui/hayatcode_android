@@ -27,10 +27,10 @@ public class ProfileActivity extends AppCompatActivity {
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
+
         tabs.setupWithViewPager(viewPager);
 
         setTitle(getString(R.string.app_name));
-
 
     }
 
