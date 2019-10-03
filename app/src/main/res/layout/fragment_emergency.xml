@@ -116,8 +116,11 @@
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="30dp"
+            android:background="@drawable/but_round_blue"
+            android:padding="10dp"
             android:text="Allergies"
-            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -128,8 +131,11 @@
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/but_round_blue"
+            android:padding="10dp"
             android:text="Medications"
-            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewAllergies" />
 
@@ -140,8 +146,11 @@
             android:layout_marginStart="30dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
+            android:background="@drawable/but_round_blue"
+            android:padding="10dp"
             android:text="Diseases"
-            android:visibility="invisible"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewMedications" />
 

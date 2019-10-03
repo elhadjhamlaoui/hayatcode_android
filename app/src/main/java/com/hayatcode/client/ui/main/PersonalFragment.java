@@ -437,11 +437,25 @@ public class PersonalFragment extends Fragment implements View.OnClickListener {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
-                    public void onSuccess(Uri uri) {
-                        user.setPhoto(uri.toString());
-                        userLocalStore.storeUserData(user);
-                        imageUploadDialog.dismiss();
-                        IV_userPhoto.setImageBitmap(bitmap);
+                    public void onSuccess(final Uri uri) {
+
+                        FirebaseDatabase.getInstance().getReference()
+                                .child("user")
+                                .child(Utils.getUID())
+                                .child("photo")
+                                .setValue(uri.toString())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            user.setPhoto(uri.toString());
+                                            userLocalStore.storeUserData(user);
+                                            imageUploadDialog.dismiss();
+                                            IV_userPhoto.setImageBitmap(bitmap);
+                                        }
+                                    }
+                                });
+
                     }
                 });
             }

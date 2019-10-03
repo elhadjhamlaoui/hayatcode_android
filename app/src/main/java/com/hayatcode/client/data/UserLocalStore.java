@@ -11,6 +11,7 @@ import com.hayatcode.client.model.Record;
 import com.hayatcode.client.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class UserLocalStore {
@@ -52,7 +53,7 @@ public class UserLocalStore {
         String records = gson.toJson(user.getRecords());
         userLocalDatabaseEditor.putString("records", records);
 
-        userLocalDatabaseEditor.apply();
+        userLocalDatabaseEditor.commit();
     }
 
     public void setUserLoggedIn(boolean loggedIn) {
@@ -98,7 +99,7 @@ public class UserLocalStore {
         }.getType());
 
         String medInfosJSON = userLocalDatabase.getString("medInfos", "");
-        ArrayList<MedicalInfo> medInfos = gson.fromJson(medInfosJSON, new TypeToken<ArrayList<MedicalInfo>>() {
+        HashMap<String, MedicalInfo> medInfos = gson.fromJson(medInfosJSON, new TypeToken<HashMap<String, MedicalInfo>>() {
         }.getType());
 
         String recordsJSON = userLocalDatabase.getString("records", "");

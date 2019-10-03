@@ -3,6 +3,7 @@ package com.hayatcode.client;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import android.Manifest;
 import android.app.Activity;
@@ -207,23 +208,22 @@ public class AddRecordActivity extends AppCompatActivity {
                     break;
 
                 case 99:
-                    Uri _uri = data.getData();
-
-                    String filePath = getRealPathFromURI(AddRecordActivity.this,_uri);
+                    String filePath = data.getDataString();
 
                     if (filePath != null) {
-                        InputStream stream = null;
+                        ;
                         try {
 
                             final StorageReference fileRef = storageRef.child("record")
                                     .child(Utils.getUID())
                                     .child(TV_file.getText().toString());
-                            stream = new FileInputStream(new File(filePath));
+                            InputStream stream = getContentResolver().openInputStream(Uri.parse(filePath));
                             UploadTask uploadTask = fileRef.putStream(stream);
                             uploadTask.addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
-                                    // Handle unsuccessful uploads
+
+                                    exception.printStackTrace();
                                 }
                             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
@@ -398,19 +398,6 @@ public class AddRecordActivity extends AppCompatActivity {
         }
     }
 
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        Cursor cursor = null;
-        try {
-            String[] proj = { MediaStore.Images.Media.DATA };
-            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-    }
+
 
 }

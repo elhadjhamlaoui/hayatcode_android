@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.data.UserLocalStore;
+import com.hayatcode.client.model.MedicalInfo;
+import com.hayatcode.client.model.User;
 
 
 import java.io.ByteArrayOutputStream;
@@ -24,11 +26,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 public class Utils {
 
+    public static User user;
+    public static UserLocalStore userLocalStore;
     public static boolean isEmailValid(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
@@ -120,5 +125,15 @@ public class Utils {
             return firebaseUser.getUid();
 
         return null;
+    }
+
+
+    public static User getUser(Context context) {
+        if (user == null) {
+            userLocalStore = new UserLocalStore(context);
+            user = userLocalStore.getLoggedInUser();
+        }
+        return user;
+
     }
 }

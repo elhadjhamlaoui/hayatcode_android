@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.data.UserLocalStore;
 import com.hayatcode.client.model.MedicalInfo;
@@ -45,18 +46,23 @@ public class AddInfoActivity extends AppCompatActivity {
                 if (validate()) {
 
                     if (Utils.getUID() != null) {
-                        final MedicalInfo medicalInfo = new MedicalInfo(TV_type.getText().toString(),
-                                ET_name.getText().toString());
-                        user.getMedInfos().add(medicalInfo);
-
-
-
-                        FirebaseDatabase.getInstance()
+                        DatabaseReference databaseReference = FirebaseDatabase.getInstance()
                                 .getReference()
                                 .child("user")
                                 .child(Utils.getUID())
-                                .child("medInfos")
-                                .setValue(user.getMedInfos())
+                                .child("medInfos");
+
+                        String key = databaseReference.push().getKey();
+
+                        final MedicalInfo medicalInfo = new MedicalInfo(TV_type.getText().toString(),
+                                ET_name.getText().toString(),key);
+
+                        user.getMedInfos().put(key, medicalInfo);
+
+
+                        databaseReference
+                                .child(key)
+                                .setValue(medicalInfo)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
@@ -83,7 +89,7 @@ public class AddInfoActivity extends AppCompatActivity {
 
                 final ArrayAdapter<String> arrayAdapter =
                         new ArrayAdapter<String>(AddInfoActivity.this,
-                                android.R.layout.select_dialog_singlechoice);
+                                android.R.layout.simple_list_item_1);
                 arrayAdapter.add("allergy");
                 arrayAdapter.add("disease");
                 arrayAdapter.add("medication");

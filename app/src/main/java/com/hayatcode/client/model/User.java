@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User implements Parcelable {
 
@@ -13,7 +14,7 @@ public class User implements Parcelable {
     private int pin;
     private String items,nationalId;
     private ArrayList<Contact> contacts;
-    private ArrayList<MedicalInfo> medInfos;
+    private HashMap<String, MedicalInfo> medInfos;
     private ArrayList<Record> records;
 
 
@@ -21,7 +22,7 @@ public class User implements Parcelable {
                 String birthDate, String gender, String photo, String password,
                 String deliveryAddress, String phone, String blood, int pin,
                 String nationalId, String items, ArrayList<Contact> contacts,
-                ArrayList<MedicalInfo> medInfos, ArrayList<Record> records) {
+                HashMap<String, MedicalInfo> medInfos, ArrayList<Record> records) {
 
         this.familyName = familyName;
         this.firstName = firstName;
@@ -45,7 +46,6 @@ public class User implements Parcelable {
 
     }
 
-
     protected User(Parcel in) {
         familyName = in.readString();
         firstName = in.readString();
@@ -58,11 +58,12 @@ public class User implements Parcelable {
         phone = in.readString();
         blood = in.readString();
         pin = in.readInt();
-        nationalId = in.readString();
         items = in.readString();
+        nationalId = in.readString();
         contacts = in.createTypedArrayList(Contact.CREATOR);
-        medInfos = in.createTypedArrayList(MedicalInfo.CREATOR);
         records = in.createTypedArrayList(Record.CREATOR);
+        medInfos = (HashMap<String, MedicalInfo>) in.readSerializable();
+
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -76,6 +77,14 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public HashMap<String, MedicalInfo> getMedInfos() {
+        return medInfos == null ? new HashMap<String, MedicalInfo>() : medInfos;
+    }
+
+    public void setMedInfos(HashMap<String, MedicalInfo> medInfos) {
+        this.medInfos = medInfos;
+    }
 
     public String getBlood() {
         return blood;
@@ -101,14 +110,7 @@ public class User implements Parcelable {
         this.contacts = contacts;
     }
 
-    public ArrayList<MedicalInfo> getMedInfos() {
-        return medInfos != null ? medInfos : new ArrayList<MedicalInfo>();
 
-    }
-
-    public void setMedInfos(ArrayList<MedicalInfo> medInfos) {
-        this.medInfos = medInfos;
-    }
 
     public String getItems() {
         return items;
@@ -225,10 +227,11 @@ public class User implements Parcelable {
         parcel.writeString(phone);
         parcel.writeString(blood);
         parcel.writeInt(pin);
-        parcel.writeString(nationalId);
         parcel.writeString(items);
+        parcel.writeString(nationalId);
         parcel.writeTypedList(contacts);
-        parcel.writeTypedList(medInfos);
         parcel.writeTypedList(records);
+        parcel.writeSerializable(medInfos);
+
     }
 }

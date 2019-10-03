@@ -6,18 +6,24 @@ import android.os.Parcelable;
 public class MedicalInfo implements Parcelable {
     private String type;
     private  String name;
+    private  String id;
 
-    public MedicalInfo(String type, String name) {
+
+    public MedicalInfo(String type, String name, String id) {
         this.type = type;
         this.name = name;
+        this.id = id;
     }
 
     public MedicalInfo() {
 
     }
+
+
     protected MedicalInfo(Parcel in) {
         type = in.readString();
         name = in.readString();
+        id = in.readString();
     }
 
     public static final Creator<MedicalInfo> CREATOR = new Creator<MedicalInfo>() {
@@ -31,6 +37,14 @@ public class MedicalInfo implements Parcelable {
             return new MedicalInfo[size];
         }
     };
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getType() {
         return type;
@@ -48,6 +62,7 @@ public class MedicalInfo implements Parcelable {
         this.name = name;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -57,5 +72,6 @@ public class MedicalInfo implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(type);
         parcel.writeString(name);
+        parcel.writeString(id);
     }
 }

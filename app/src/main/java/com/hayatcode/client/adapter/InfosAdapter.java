@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
+import com.hayatcode.client.Static;
 import com.hayatcode.client.Utils;
 import com.hayatcode.client.data.UserLocalStore;
 import com.hayatcode.client.model.Contact;
@@ -38,20 +40,16 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
 
     Context context;
     ArrayList<MedicalInfo> medicalInfos;
-    User user;
-    UserLocalStore userLocalStore;
 
     public InfosAdapter(Context context, ArrayList<MedicalInfo> medicalInfos) {
         this.context = context;
         this.medicalInfos = medicalInfos;
-
-        userLocalStore = new UserLocalStore(context);
-        user = userLocalStore.getLoggedInUser();
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
 
         View view = LayoutInflater.from(context).inflate(R.layout.info_list_item, parent, false);
         return new viewHolder(view);
@@ -81,7 +79,7 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
             label = itemView.findViewById(R.id.label);
             rootLayout = itemView.findViewById(R.id.root);
 
-            /*rootLayout.setOnClickListener(new View.OnClickListener() {
+            rootLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -104,11 +102,7 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
-
-                                int position;
-                                MedicalInfo medicalInfo = medicalInfos.get(getAdapterPosition())
-                                medicalInfos.remove(getAdapterPosition());
-                                user.setMedInfos(medicalInfos);
+                                final MedicalInfo medicalInfo = medicalInfos.get(getAdapterPosition());
 
                                 if (Utils.getUID() != null) {
                                     FirebaseDatabase.getInstance()
@@ -116,13 +110,31 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
                                             .child("user")
                                             .child(Utils.getUID())
                                             .child("medInfos")
-                                            .setValue(medicalInfos)
+                                            .child(medicalInfo.getId())
+                                            .setValue(null)
                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                 @Override
                                                 public void onComplete(@NonNull Task<Void> task) {
                                                     if (task.isSuccessful()) {
-                                                        userLocalStore.storeUserData(user);
+                                                        medicalInfos.remove(getAdapterPosition());
+                                                        Utils.user.getMedInfos().remove(medicalInfo.getId());
+                                                        Utils.userLocalStore.storeUserData(Utils.user);
                                                         notifyDataSetChanged();
+                                                        if (medicalInfos.isEmpty()) {
+                                                            switch (medicalInfo.getType()) {
+                                                                case "disease":
+                                                                    Static.TV_diseases.setVisibility(View.GONE);
+                                                                    break;
+                                                                case "allergy":
+                                                                    Static.TV_allergies.setVisibility(View.GONE);
+                                                                    break;
+
+                                                                case "medication":
+                                                                    Static.TV_medications.setVisibility(View.GONE);
+                                                                    break;
+
+                                                            }
+                                                        }
                                                     }
 
                                                 }
@@ -134,7 +146,7 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
                     });
                     builderSingle.show();
                 }
-            });*/
+            });
 
 
         }

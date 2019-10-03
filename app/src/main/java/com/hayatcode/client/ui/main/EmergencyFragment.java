@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.AddInfoActivity;
 import com.hayatcode.client.Constant;
 import com.hayatcode.client.R;
+import com.hayatcode.client.Static;
 import com.hayatcode.client.Utils;
 import com.hayatcode.client.adapter.InfosAdapter;
 import com.hayatcode.client.data.UserLocalStore;
@@ -30,6 +31,7 @@ import com.hayatcode.client.model.MedicalInfo;
 import com.hayatcode.client.model.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -48,10 +50,9 @@ public class EmergencyFragment extends Fragment {
     TextView TV_blood;
     Button BT_blood;
     ArrayList<MedicalInfo> allgergies, diseases, medications;
-    User user;
-    UserLocalStore userLocalStore;
     FloatingActionButton BT_add;
 
+    User user;
     public static EmergencyFragment newInstance(int index) {
         EmergencyFragment fragment = new EmergencyFragment();
         Bundle bundle = new Bundle();
@@ -64,8 +65,8 @@ public class EmergencyFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        userLocalStore = new UserLocalStore(getActivity());
-        user = userLocalStore.getLoggedInUser();
+
+
 
         pageViewModel = ViewModelProviders.of(this).get(PageViewModel.class);
         int index = 1;
@@ -86,12 +87,18 @@ public class EmergencyFragment extends Fragment {
         recyclerViewDiseases = root.findViewById(R.id.recyclerViewDiseases);
         BT_add = root.findViewById(R.id.add);
 
+        user = Utils.getUser(getActivity());
+
         TV_blood = root.findViewById(R.id.blood_type);
         BT_blood = root.findViewById(R.id.edit_blood);
 
         TV_allgergies = root.findViewById(R.id.allergies_label);
         TV_diseases = root.findViewById(R.id.diseases_label);
         TV_medications = root.findViewById(R.id.med_label);
+
+        Static.TV_allergies = TV_allgergies;
+        Static.TV_diseases = TV_diseases;
+        Static.TV_medications = TV_medications;
 
         allgergies = new ArrayList<>();
         diseases = new ArrayList<>();
@@ -189,7 +196,7 @@ public class EmergencyFragment extends Fragment {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()) {
-                                    userLocalStore.storeUserData(user);
+                                    Utils.userLocalStore.storeUserData(user);
 
                                 }
                             }
@@ -209,13 +216,13 @@ public class EmergencyFragment extends Fragment {
 
     private void addItems() {
 
-        ArrayList<MedicalInfo> medicalInfos = user.getMedInfos();
+        HashMap<String, MedicalInfo> medicalInfos = user.getMedInfos();
 
         diseases.clear();
         medications.clear();
         allgergies.clear();
 
-        for (MedicalInfo medicalInfo : medicalInfos) {
+        for (MedicalInfo medicalInfo : medicalInfos.values()) {
             if (medicalInfo.getType().equals("disease")) {
                 diseases.add(medicalInfo);
             } else if (medicalInfo.getType().equals("medication")) {
@@ -224,7 +231,6 @@ public class EmergencyFragment extends Fragment {
                 allgergies.add(medicalInfo);
 
             }
-
         }
 
         if (!diseases.isEmpty())
@@ -247,10 +253,11 @@ public class EmergencyFragment extends Fragment {
         // check if the request code is same as what is passed  here it is 2
         if (requestCode == 25) {
             if (resultCode == Constant.RESULT_SUCCESS) {
-                user = userLocalStore.getLoggedInUser();
+                user = Utils.userLocalStore.getLoggedInUser();
                 addItems();
             }
 
         }
     }
+
 }
