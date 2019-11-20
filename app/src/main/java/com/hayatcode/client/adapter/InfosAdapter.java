@@ -1,38 +1,25 @@
 package com.hayatcode.client.adapter;
 
-import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
-import com.hayatcode.client.Static;
-import com.hayatcode.client.Utils;
-import com.hayatcode.client.data.UserLocalStore;
-import com.hayatcode.client.model.Contact;
+import com.hayatcode.client.utils.Static;
+import com.hayatcode.client.utils.Utils;
 import com.hayatcode.client.model.MedicalInfo;
-import com.hayatcode.client.model.User;
 
 import java.util.ArrayList;
 
@@ -88,6 +75,8 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
                     final ArrayAdapter<String> arrayAdapter =
                             new ArrayAdapter<String>(context,
                                     android.R.layout.simple_list_item_1);
+                    arrayAdapter.add("Privacy level");
+
                     arrayAdapter.add("Delete");
 
 
@@ -102,45 +91,114 @@ public class InfosAdapter extends RecyclerView.Adapter<InfosAdapter.viewHolder> 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (which == 0) {
+                                android.app.AlertDialog.Builder builderSingle = new android.app.AlertDialog.Builder(context);
+
+                                final ArrayAdapter<String> arrayAdapter =
+                                        new ArrayAdapter<>(context,
+                                                android.R.layout.select_dialog_singlechoice);
+
+                                arrayAdapter.add("everyone");
+                                arrayAdapter.add("everyone with the pin number");
+                                arrayAdapter.add("trusted health providers");
+                                arrayAdapter.add("only me");
+
                                 final MedicalInfo medicalInfo = medicalInfos.get(getAdapterPosition());
 
-                                if (Utils.getUID() != null) {
-                                    FirebaseDatabase.getInstance()
-                                            .getReference()
-                                            .child("user")
-                                            .child(Utils.getUID())
-                                            .child("medInfos")
-                                            .child(medicalInfo.getId())
-                                            .setValue(null)
-                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        medicalInfos.remove(getAdapterPosition());
-                                                        Utils.user.getMedInfos().remove(medicalInfo.getId());
-                                                        Utils.userLocalStore.storeUserData(Utils.user);
-                                                        notifyDataSetChanged();
-                                                        if (medicalInfos.isEmpty()) {
-                                                            switch (medicalInfo.getType()) {
-                                                                case "disease":
-                                                                    Static.TV_diseases.setVisibility(View.GONE);
-                                                                    break;
-                                                                case "allergy":
-                                                                    Static.TV_allergies.setVisibility(View.GONE);
-                                                                    break;
+                                int position = medicalInfo.getPrivacy();
 
-                                                                case "medication":
-                                                                    Static.TV_medications.setVisibility(View.GONE);
-                                                                    break;
 
-                                                            }
-                                                        }
-                                                    }
+                                builderSingle.setSingleChoiceItems(R.array.privacy,
+                                        position, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                                Static.getUser(context).getMedInfos().get(medicalInfo.getId())
+                                                        .setPrivacy(which);
+                                                medicalInfo.setPrivacy(which);
+                                                if (Utils.getUID() != null) {
+                                                    FirebaseDatabase.getInstance()
+                                                            .getReference()
+                                                            .child("user")
+                                                            .child(Utils.getUID())
+                                                            .child("medInfos")
+                                                            .child(medicalInfo.getId())
+                                                            .setValue(medicalInfo)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Static.getUserLocalStore(context).storeUserData(Static.getUser(context));
+                                                                        notifyDataSetChanged();
+
+                                                                    }
+
+                                                                }
+                                                            });
+                                                }
+                                            }
+                                        });
+                                builderSingle.setPositiveButton(context.getString(R.string.ok), null);
+
+                                builderSingle.show();
+                            } else {
+                                androidx.appcompat.app.AlertDialog.Builder builder =
+                                        new androidx.appcompat.app.AlertDialog.Builder(context);
+                                builder.setMessage(context.getString(R.string.delete_allert));
+                                builder.setPositiveButton(context.getString(R.string.yes),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                final MedicalInfo medicalInfo = medicalInfos.get(getAdapterPosition());
+
+                                                if (Utils.getUID() != null) {
+                                                    FirebaseDatabase.getInstance()
+                                                            .getReference()
+                                                            .child("user")
+                                                            .child(Utils.getUID())
+                                                            .child("medInfos")
+                                                            .child(medicalInfo.getId())
+                                                            .setValue(null)
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        medicalInfos.remove(getAdapterPosition());
+                                                                        Static.getUser(context).getMedInfos().remove(medicalInfo.getId());
+                                                                        Static.getUserLocalStore(context).storeUserData(Static.getUser(context));
+                                                                        notifyDataSetChanged();
+                                                                        if (medicalInfos.isEmpty()) {
+                                                                            switch (medicalInfo.getType()) {
+                                                                                case "disease":
+                                                                                    Static.TV_diseases.setVisibility(View.GONE);
+                                                                                    break;
+                                                                                case "allergy":
+                                                                                    Static.TV_allergies.setVisibility(View.GONE);
+                                                                                    break;
+
+                                                                                case "medication":
+                                                                                    Static.TV_medications.setVisibility(View.GONE);
+                                                                                    break;
+
+                                                                            }
+
+                                                                        }
+
+                                                                        if (Static.getUser(context).getMedInfos().isEmpty())
+                                                                            Static.IV_empty_emergency.setVisibility(View.VISIBLE);
+                                                                        else
+                                                                            Static.IV_empty_emergency.setVisibility(View.INVISIBLE);
+                                                                    }
+
+                                                                }
+                                                            });
 
                                                 }
-                                            });
+                                            }
+                                        });
+                                builder.setNegativeButton(context.getString(R.string.no),
+                                        null);
+                                builder.show();
 
-                                }
                             }
                         }
                     });

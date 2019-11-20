@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    android:background="@android:color/white"
+    tools:context=".activity.LoginActivity">
 
     <EditText
         android:id="@+id/password"
@@ -16,10 +17,12 @@
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginBottom="20dp"
+        android:background="@drawable/bac_edittext_red"
         android:ems="10"
         android:gravity="center"
         android:hint="password"
         android:inputType="textPassword"
+        android:padding="15dp"
         android:textColor="@color/colorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -59,6 +62,7 @@
         android:layout_marginRight="50dp"
         android:gravity="center"
         android:text="Log in to \n Hayat Code"
+        android:textColor="@color/cardview_dark_background"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

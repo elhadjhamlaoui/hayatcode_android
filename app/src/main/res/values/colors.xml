@@ -14,7 +14,7 @@
     <color name="yellow">#FFCA3A</color>
     <color name="red">#E23F5B</color>
     <color name="blue_splash">#04A8FA</color>
-    <color name="blue_end_stage">#11A3FF</color>
+    <color name="blue">#11A3FF</color>
     <color name="dark_green">#40A41B</color>
     <color name="materials_yellow">#FED800</color>
     <color name="materials_dark">#182b3a</color>
@@ -23,7 +23,7 @@
 
     <color name="facebook_blue">#026BE6</color>
     <color name="green_modules">#36e5a8</color>
-    <color name="red_revision">#e25061</color>
+    <color name="red_revision">#E25061</color>
     <color name="yellow_challenge">#ffe200</color>
     <color name="yellow_date_bac">#ffc32d</color>
     <color name="dark_blue">#07419d</color>

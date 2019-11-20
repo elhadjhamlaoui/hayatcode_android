@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_bac"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <Button
         android:id="@+id/scan"
@@ -35,6 +35,10 @@
         android:layout_marginBottom="20dp"
         android:background="@drawable/but_red_round"
         android:text="Order new Code"
+        android:drawableEnd="@drawable/ic_add_circle"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
+        android:drawableRight="@drawable/ic_add_circle"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,11 +60,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/bungee"
+        android:fontFamily="@font/klavika"
         android:gravity="center"
         android:text="Hayat Code"
         android:textColor="@android:color/white"
-        android:textSize="30sp"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
@@ -74,18 +78,18 @@
         android:layout_marginTop="92dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
-        android:fontFamily="@font/bungee"
+        android:fontFamily="@font/klavika"
         android:gravity="center"
         android:lineSpacingExtra="8sp"
-        android:text="Your entire medical history in a single QRcode\n Your Security is our responsibility"
+        android:text="Your entire medical history in a single QRcode"
         android:textColor="@android:color/white"
-        android:textSize="24sp"
+        android:textSize="30sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/scan"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12"
-        app:layout_constraintVertical_bias="0.729" />
+        app:layout_constraintVertical_bias="0.867" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

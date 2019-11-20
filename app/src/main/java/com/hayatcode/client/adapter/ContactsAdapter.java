@@ -26,14 +26,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hayatcode.client.R;
-import com.hayatcode.client.Utils;
 import com.hayatcode.client.data.UserLocalStore;
 import com.hayatcode.client.model.Contact;
 import com.hayatcode.client.model.User;
+import com.hayatcode.client.utils.Static;
+import com.hayatcode.client.utils.Utils;
 
 import java.util.ArrayList;
 
-public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHolder>  {
+public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHolder> {
 
     Context context;
     ArrayList<Contact> contacts;
@@ -70,22 +71,21 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
     }
 
 
-
-    class viewHolder extends RecyclerView.ViewHolder implements ActivityCompat.OnRequestPermissionsResultCallback{
+    class viewHolder extends RecyclerView.ViewHolder implements ActivityCompat.OnRequestPermissionsResultCallback {
         TextView label;
         ConstraintLayout rootLayout;
 
         @Override
         public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
             boolean permissionGranted = false;
-            switch(requestCode){
+            switch (requestCode) {
                 case 9:
-                    permissionGranted = grantResults[0]== PackageManager.PERMISSION_GRANTED;
+                    permissionGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                     break;
             }
-            if(permissionGranted){
+            if (permissionGranted) {
                 makeCall();
-            }else {
+            } else {
                 Toast.makeText(context, "You don't assign permission.", Toast.LENGTH_SHORT).show();
             }
         }
@@ -104,6 +104,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
                             new ArrayAdapter<String>(context,
                                     android.R.layout.simple_list_item_1);
                     arrayAdapter.add("Call");
+                    arrayAdapter.add("Privacy level");
                     arrayAdapter.add("Delete");
 
 
@@ -122,41 +123,99 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
                                 if (Build.VERSION.SDK_INT < 23) {
                                     makeCall();
 
-                                }else {
+                                } else {
 
                                     if (ActivityCompat.checkSelfPermission(context,
                                             Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
 
                                         makeCall();
-                                    }else {
+                                    } else {
                                         final String[] PERMISSIONS_STORAGE = {Manifest.permission.CALL_PHONE};
                                         //Asking request Permissions
-                                        ActivityCompat.requestPermissions((AppCompatActivity)context, PERMISSIONS_STORAGE, 9);
+                                        ActivityCompat.requestPermissions((AppCompatActivity) context, PERMISSIONS_STORAGE, 9);
                                     }
                                 }
 
 
+                            } else if (which == 1) {
+                                android.app.AlertDialog.Builder builderSingle = new android.app.AlertDialog.Builder(context);
 
-                            } else {
-                                contacts.remove(getAdapterPosition());
-                                user.setContacts(contacts);
-                                if (Utils.getUID() != null) {
-                                    FirebaseDatabase.getInstance()
-                                            .getReference()
-                                            .child("user")
-                                            .child(Utils.getUID())
-                                            .child("contacts")
-                                            .setValue(contacts).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                userLocalStore.storeUserData(user);
+                                final ArrayAdapter<String> arrayAdapter =
+                                        new ArrayAdapter<>(context,
+                                                android.R.layout.select_dialog_singlechoice);
 
-                                                notifyDataSetChanged();
-                                            }
+                                arrayAdapter.add("everyone");
+                                arrayAdapter.add("everyone with the pin number");
+                                arrayAdapter.add("trusted health providers");
+                                arrayAdapter.add("only me");
+
+                                int position = contacts.get(getAdapterPosition()).getPrivacy();
+
+
+                                builderSingle.setSingleChoiceItems(R.array.privacy, position, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        contacts.get(getAdapterPosition()).setPrivacy(which);
+                                        user.setContacts(contacts);
+                                        if (Utils.getUID() != null) {
+                                            FirebaseDatabase.getInstance()
+                                                    .getReference()
+                                                    .child("user")
+                                                    .child(Utils.getUID())
+                                                    .child("contacts")
+                                                    .setValue(contacts).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        userLocalStore.storeUserData(user);
+                                                        notifyDataSetChanged();
+                                                    }
+                                                }
+                                            });
                                         }
-                                    });
-                                }
+                                    }
+                                });
+                                builderSingle.setPositiveButton(context.getString(R.string.ok), null);
+
+                                builderSingle.show();
+                            } else {
+                                androidx.appcompat.app.AlertDialog.Builder builder =
+                                        new androidx.appcompat.app.AlertDialog.Builder(context);
+                                builder.setMessage(context.getString(R.string.delete_allert));
+                                builder.setPositiveButton(context.getString(R.string.yes),
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                contacts.remove(getAdapterPosition());
+                                                user.setContacts(contacts);
+                                                if (Utils.getUID() != null) {
+                                                    FirebaseDatabase.getInstance()
+                                                            .getReference()
+                                                            .child("user")
+                                                            .child(Utils.getUID())
+                                                            .child("contacts")
+                                                            .setValue(contacts).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            if (task.isSuccessful()) {
+                                                                userLocalStore.storeUserData(user);
+
+                                                                notifyDataSetChanged();
+                                                                if (contacts.isEmpty())
+                                                                    Static.IV_empty_contacts.setVisibility(View.VISIBLE);
+                                                                else
+                                                                    Static.IV_empty_contacts.setVisibility(View.INVISIBLE);
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            }
+                                        });
+                                builder.setNegativeButton(context.getString(R.string.no),
+                                        null);
+                                builder.show();
+
                             }
                         }
                     });
@@ -165,8 +224,8 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
             });
 
 
-
         }
+
         @SuppressLint("MissingPermission")
         void makeCall() {
             String phone = contacts.get(getAdapterPosition()).getPhone();
@@ -174,7 +233,6 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.viewHo
             context.startActivity(intent);
         }
     }
-
 
 
 }

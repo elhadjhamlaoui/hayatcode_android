@@ -12,7 +12,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".OrderNewCode4">
+        android:background="@android:color/white"
+        tools:context=".activity.OrderNewCode4">
 
         <Button
             android:id="@+id/order"
@@ -65,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="50dp"
             android:layout_marginRight="50dp"
             android:background="@drawable/but_red_round"
@@ -131,14 +132,15 @@
             android:id="@+id/textView4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginRight="30dp"
             android:gravity="center"
             android:text="Hayat code can be printed on different items,\n chose at least one"
-            android:textSize="18sp"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

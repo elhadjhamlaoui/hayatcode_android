@@ -5,6 +5,6 @@
         android:radius="10dp"
         />
     <solid
-        android:color="@color/blue_end_stage"
+        android:color="@color/blue"
         />
 </shape>

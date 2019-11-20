@@ -5,14 +5,16 @@ import android.os.Parcelable;
 
 public class MedicalInfo implements Parcelable {
     private String type;
-    private  String name;
-    private  String id;
+    private String name;
+    private String id;
+    private int privacy;
 
 
-    public MedicalInfo(String type, String name, String id) {
+    public MedicalInfo(String type, String name, String id, int privacy) {
         this.type = type;
         this.name = name;
         this.id = id;
+        this.privacy = privacy;
     }
 
     public MedicalInfo() {
@@ -24,6 +26,7 @@ public class MedicalInfo implements Parcelable {
         type = in.readString();
         name = in.readString();
         id = in.readString();
+        privacy = in.readInt();
     }
 
     public static final Creator<MedicalInfo> CREATOR = new Creator<MedicalInfo>() {
@@ -37,6 +40,14 @@ public class MedicalInfo implements Parcelable {
             return new MedicalInfo[size];
         }
     };
+
+    public int getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(int privacy) {
+        this.privacy = privacy;
+    }
 
     public String getId() {
         return id;
@@ -73,5 +84,6 @@ public class MedicalInfo implements Parcelable {
         parcel.writeString(type);
         parcel.writeString(name);
         parcel.writeString(id);
+        parcel.writeInt(privacy);
     }
 }

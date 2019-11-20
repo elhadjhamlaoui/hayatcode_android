@@ -11,6 +11,19 @@
         <item>AB negative</item>
 
     </array>
+
+    <array name="privacy">
+        <item>everyone</item>
+        <item>everyone with the pin number</item>
+        <item>trusted health providers</item>
+        <item>only me</item>
+    </array>
+
+    arrayAdapter.add("everyone");
+    arrayAdapter.add("everyone with the pin number");
+    arrayAdapter.add("trusted health providers");
+    arrayAdapter.add("only me");
+
     <string name="app_name">Hayat Code</string>
     <string name="password_required">at least 6 characters</string>
     <string name="wrong_password">Wrong Password</string>
@@ -28,7 +41,9 @@
     <string name="atleast_item">Please Choose at least 1 item</string>
     <string name="select_type">Please Select the type of information</string>
     <string name="uploading_photo">Uploading photo..</string>
-    <string name="change_pass_success">Password changed</string>
+    <string name="change_pass_success">Password changed successfully</string>
+    <string name="change_pin_success">Pin number changed successfully</string>
+
     <string name="ok">ok</string>
     <string name="current_pass_incorrect">wrong password</string>
     <string name="gender">Chose your gender</string>
@@ -46,5 +61,11 @@
     <string name="select_record">Please select the record</string>
     <string name="uploading_file">Uploading file...</string>
     <string name="saving_update">Saving changes...</string>
+    <string name="order_new_code">order new code</string>
+    <string name="select_privacy">Please choose a privacy level</string>
+    <string name="delete_allert">Are you sure you want to delete?</string>
+    <string name="change_language">Change language</string>
+    <string name="pin_repeat_error">You need to enter the same pin</string>
+    <string name="pin_starts_with">Pin cannot be started with 0 !</string>
 
 </resources>

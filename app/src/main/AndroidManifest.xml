@@ -2,6 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hayatcode.client">
 
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,22 +22,23 @@
         android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".AddRecordActivity"></activity>
-        <activity android:name=".ChangePasswordActivity" />
-        <activity android:name=".AddInfoActivity" />
-        <activity android:name=".AddContactActivity" />
-        <activity android:name=".OrderNewCode5" />
-        <activity android:name=".OrderNewCode4" />
-        <activity android:name=".OrderNewCode3" />
-        <activity android:name=".OrderNewCode2" />
-        <activity android:name=".OrderNewCode" />
+        <activity android:name=".activity.ChangePinActivity"></activity>
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.AddRecordActivity" />
+        <activity android:name=".activity.ChangePasswordActivity" />
+        <activity android:name=".activity.AddInfoActivity" />
+        <activity android:name=".activity.AddContactActivity" />
+        <activity android:name=".activity.OrderNewCode5" />
+        <activity android:name=".activity.OrderNewCode4" />
+        <activity android:name=".activity.OrderNewCode3" />
+        <activity android:name=".activity.OrderNewCode2" />
+        <activity android:name=".activity.OrderNewCode" />
         <activity
-            android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".Scanner" />
-        <activity android:name=".MainActivity">
+            android:name=".activity.ProfileActivity"
+            android:label="@string/title_activity_profile" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.Scanner" />
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,19 +49,5 @@
             </intent-filter>
         </activity>
     </application>
-    <uses-feature
-        android:name="android.hardware.camera.autofocus"
-        android:required="false" />
-
-    <uses-feature
-        android:name="android.hardware.camera"
-        android:required="false" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>
