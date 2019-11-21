@@ -4,6 +4,9 @@ Hayat Code Android Application
 Play Store link:
 https://play.google.com/store/apps/details?id=com.hayatcode.client
 
+Website:
+https://hayatcode.company
+
 -------------------------------------------------------------
 testing information :
 
